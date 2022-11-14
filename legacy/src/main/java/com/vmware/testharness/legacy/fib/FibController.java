@@ -50,7 +50,7 @@ public class FibController {
         }
         else if ((rando < controlsEntity.getSendToModernPercent()) && (!controlsEntity.isUseModernImpl())) {
             // send to modern async
-            log.info ("sending async, controller thread is " + Thread.currentThread().getName());
+            log.debug ("sending async, controller thread is " + Thread.currentThread().getName());
             modernFibService.sendToModernAsync(number.intValue());
         }
         return fibCalc(number.intValue());

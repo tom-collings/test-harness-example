@@ -14,7 +14,7 @@ public class ModernFibService {
 
     @Async
     public void sendToModernAsync (int number) {
-        log.info("In async method, thread name is " + Thread.currentThread().getName());
+        log.debug("In async method, thread name is " + Thread.currentThread().getName());
         sendToModern(number);
     }
 
