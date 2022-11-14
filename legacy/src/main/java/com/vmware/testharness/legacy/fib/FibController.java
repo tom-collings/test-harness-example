@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,13 +20,14 @@ import java.util.Calendar;
 public class FibController {
 
     private ControlsRespository controlsRespository;
+    private ModernFibService modernFibService;
     private long lastLookupTime = 0;
     ControlsEntity controlsEntity;
     private static final long LOOKUP_INTERVAL = 10000;
-    RestTemplate restTemplate = new RestTemplate();
 
-    public FibController(ControlsRespository controlsRespository) {
+    public FibController(ControlsRespository controlsRespository, ModernFibService modernFibService) {
         this.controlsRespository = controlsRespository;
+        this.modernFibService = modernFibService;
     }
 
     @GetMapping("/fib")
@@ -44,19 +46,14 @@ public class FibController {
         double rando = Math.random()*100.0;
         if ((rando < controlsEntity.getSendToModernPercent())  && controlsEntity.isUseModernImpl()){
             //send to modern inline and return the value calculated
-            return sendToModern(number.intValue());
+            return modernFibService.sendToModern(number.intValue());
         }
         else if ((rando < controlsEntity.getSendToModernPercent()) && (!controlsEntity.isUseModernImpl())) {
             // send to modern async
+            log.info ("sending async, controller thread is " + Thread.currentThread().getName());
+            modernFibService.sendToModernAsync(number.intValue());
         }
         return fibCalc(number.intValue());
-    }
-
-    private int sendToModern (int number) {
-        log.info("sending to the modern implementation for a result");
-        ResponseEntity<Integer> response =
-                restTemplate.getForEntity("http://localhost:8082/fib?index=" + number, Integer.class);
-        return response.getBody().intValue();
     }
 
     private int fibCalc (int number) throws FibException{

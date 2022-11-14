@@ -22,7 +22,7 @@ public class ControlsController {
     @EventListener
     public void appReady (ApplicationReadyEvent event) {
         // initialize the config to send everything to the legacy implementation
-        controlsRespository.save(new ControlsEntity().withId(1L).withSendToModernPercent(100).withUseModernImpl(true));
+        controlsRespository.save(new ControlsEntity().withId(1L).withSendToModernPercent(100).withUseModernImpl(false));
     }
 
     @PostMapping(path = "/controls",
