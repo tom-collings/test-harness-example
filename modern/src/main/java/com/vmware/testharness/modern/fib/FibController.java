@@ -1,5 +1,6 @@
 package com.vmware.testharness.modern.fib;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +19,9 @@ public class FibController {
 
     @GetMapping("/fib")
     @ResponseBody
-    public Integer getByIndex(@RequestParam("index")Integer index) throws FibException {
+    public Integer getByIndex(@RequestParam("index")Integer index, @RequestParam("uuid")String uuid) throws FibException {
         log.info("retrieving for index = " + index);
-        return fibService.get(index.intValue());
+        return fibService.getAndSend(index.intValue(), uuid);
     }
 
 }

@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class FibControllerTest {
 
     @MockBean
-    FibService fibService;
+    FibCalcService fibCalcService;
 
     @Autowired
     MockMvc mockMvc;
@@ -27,24 +27,24 @@ public class FibControllerTest {
     @Test
     public void testGetByIndex() throws Exception {
 
-        when(fibService.get(1)).thenReturn(1);
+        when(fibCalcService.get(1)).thenReturn(1);
 
         ResultActions result = mockMvc.perform(get("/fib?index=1"))
                 .andExpect(status().isOk());
 
-        verify(fibService).get(1);
+        verify(fibCalcService).get(1);
 
     }
 
     @Test
     public void testGetByBadIndex() throws Exception {
 
-        when(fibService.get(-1)).thenThrow(new FibException("negative number"));
+        when(fibCalcService.get(-1)).thenThrow(new FibException("negative number"));
 
         ResultActions result = mockMvc.perform(get("/fib?index=-1"))
                 .andExpect(status().isBadRequest());
 
-        verify(fibService).get(-1);
+        verify(fibCalcService).get(-1);
 
     }
 
