@@ -1,5 +1,5 @@
 {
   "id":1,
-  "useModernImpl":true,
-  "sendToModernPercent":50
+  "useModernImpl":false,
+  "sendToModernPercent":100
 }
