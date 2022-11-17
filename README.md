@@ -37,7 +37,7 @@ The committed state of this `sampleConfig.json` file is to send 100% of the traf
 
 There is a ten second interval before a new runtime configuration is checked, so be prepared to wait at least that long.
 
-Now if the same `localhost:8081\fib?number=7 endpoint is hit, you should be able to see a few things:
+Now if the same `localhost:8081\fib?number=7` endpoint is hit, you should be able to see a few things:
 
 1.  logs in the legacy app indicating that the modern app was invoked
 2.  logs in the modern app indicating that a request was made
@@ -50,8 +50,11 @@ If these three things are visible, we are then ready to start the testharness ap
 This testharness application takes results off of the fibcalc-topic exchange and writes them to a local data store.  There should be a pair for each request:  one from the legacy system and another from the modern system.  The repository also has a few queries exposed through a controller:
 
 ```localhost:8083\all``` will return the results of every message pulled off the exchange
+
 ```localhost:8083\totalCalcCount``` will return the number of message pairs processed
+
 ```localhost:8083\goodCountRatio``` will return a number between 0 and 1 showing how many of the pairs have identical results versus the total number of pairs
+
 ```localhost:8083\badMatches``` will return the pairs where the results do not match
 
 This codebase is meant to be used as an illustration:  there are a lot of hard-coded configurations, and none of the endpoints are secured.  Please use caution when applying these techniques in production.
